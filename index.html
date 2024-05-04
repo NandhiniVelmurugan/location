@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Logger</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <center>  <h1>Location Logger</h1>
+        <header>
+      
+            <h4>Location Logger Is A Platform That Built For Fetching the Live Location Of The User And Then Display it In THINKSPEAK Website</h4>
+            <h2>Nandhini V</h2>
+            <h3>21ITR068</h3>
+            <h3>Cloud Computing Lab Exercise No:9</h3>
+        </header>
+
+        <br>
+    <button id="logButton">GET LOCATION</button>
+
+    <section class="location-section">
+        <div id="locationData">
+            <h2>Your Location</h2>
+            <p>Latitude: <span id="latitude"></span></p>
+            <p>Longitude: <span id="longitude"></span></p>
+        </div>
+
+        <div id="thingSpeakData">
+            <h2>Recent Data from ThingSpeak</h2>
+            <p>Latitude: <span id="tsLatitude"></span></p>
+            <p>Longitude: <span id="tsLongitude"></span></p>
+        </div>
+
+        <div id="thingSpeakChart">
+            <h2>ThingSpeak Chart</h2>
+        </div>
+    </section></center>
+    
+
+    <script >
+       $(document).ready(function() {
+    if ("geolocation" in navigator) {
+        $('#logButton').click(function() {
+            navigator.geolocation.getCurrentPosition(sendGeoLocation, handleLocationError);
+        });
+    } else {
+        alert('Geolocation is not supported by your browser.');
+    }
+
+    fetchThingSpeakData();
+});
+
+function sendGeoLocation(position) {
+    var latitude = position.coords.latitude.toFixed(6);
+    var longitude = position.coords.longitude.toFixed(6);
+
+    $('#latitude').text(latitude);
+    $('#longitude').text(longitude);
+
+    sendDataToThingSpeak(latitude, longitude);
+}
+
+function handleLocationError(error) {
+    alert('Error occurred. Error code: ' + error.code + ' - ' + error.message);
+}
+
+function sendDataToThingSpeak(latitude, longitude) {
+    var apiUrl = "https://api.thingspeak.com/update.json";
+    var data = {
+        api_key: 'UBQUCOE00G0LQWEP',
+        field1: latitude,
+        field2: longitude
+    };
+
+    $.post(apiUrl, data, function(response) {
+        console.log('Data sent to ThingSpeak successfully.');
+        displayThingSpeakChart();
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error('Error sending data to ThingSpeak: ' + textStatus);
+    });
+}
+
+function fetchThingSpeakData() {
+    var apiUrl = "https://api.thingspeak.com/channels/2521789/feeds.json?api_key=70JZ2GR9OMAJFPT7&results=1";
+
+    $.getJSON(apiUrl, function(data) {
+        var feeds = data.feeds;
+        if (feeds.length > 0) {
+            var latestData = feeds[0];
+            $('#tsLatitude').text(latestData.field1);
+            $('#tsLongitude').text(latestData.field2);
+        } else {
+            console.log('No data available from ThingSpeak.');
+        }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error('Error fetching data from ThingSpeak: ' + textStatus);
+    });
+}
+
+function displayThingSpeakChart() {
+    var iframe = '<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2527677/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>';
+    $('#thingSpeakChart').html(iframe);
+}
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+/* Basic Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #333333; /* A dark charcoal grey */
+    color: white;
+    padding: 20px 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+h1, h2, h3, h4 {
+    margin: 10px 0;
+}
+
+/* Button styling */
+button {
+    display: inline-block;
+    padding: 10px 25px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+button:hover, button:focus {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    outline: none; /* Removes focus outline */
+}
+
+/* Content Section */
+.location-section {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+#locationData, #thingSpeakData {
+    margin-bottom: 20px;
+}
+
+p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Center elements when needed */
+.center {
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 5px;
+    }
+
+    button {
+        width: 90%; /* Full-width buttons on smaller screens */
+        margin: 10px auto; /* Ensure margin for vertical spacing */
+    }
+
+    .location-section {
+        padding: 15px; /* Slightly less padding on smaller screens */
+    }
+
+    h1, h2, h3, h4 {
+        padding: 0 10px; /* Padding to avoid text touching the edge */
+    }
+}
